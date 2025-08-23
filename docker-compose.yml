@@ -1,0 +1,46 @@
+services:
+  database:
+    container_name: chabot-database
+    image: bitnami/postgresql
+    user: postgres
+    ports:
+      - 5435:5432
+    environment:
+      - POSTGRESQL_PASSWORD=123
+      - POSTGRESQL_DATABASE=chatbot
+    volumes:
+      - chatbot-database:/bitnami/postgresql
+    networks:
+      - chatbot
+  pgadmin:
+    container_name: chatbot-pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - chatbot-pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - chatbot
+    restart: unless-stopped
+  redis:
+    container_name: chatbot-redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - chatbot-redis:/data
+    networks:
+      - chatbot
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+networks:
+  chatbot:
+    driver: bridge
+volumes:
+  chatbot-database:
+  chatbot-pgadmin:
+  chatbot-redis:
