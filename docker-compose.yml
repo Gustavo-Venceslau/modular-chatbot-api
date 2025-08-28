@@ -34,13 +34,35 @@ services:
     volumes:
       - chatbot-redis:/data
     networks:
-      - chatbot
+      - redis-network
     restart: unless-stopped
     command: redis-server --appendonly yes
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: redisinsight
+    restart: unless-stopped
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDISINSIGHT_HOST=0.0.0.0
+      - REDISINSIGHT_ACCEPT_LICENSE=true  # Accept EULA and Privacy Settings
+    ports:
+      - "5540:5540"
+    volumes:
+      - redisinsight-data:/db
+    networks:
+      - redis-network
+    depends_on:
+      - redis
 networks:
+  redis-network:
+    driver: bridge
   chatbot:
     driver: bridge
 volumes:
   chatbot-database:
   chatbot-pgadmin:
   chatbot-redis:
+    driver: local
+  redisinsight-data:
+    driver: local

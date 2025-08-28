@@ -12,11 +12,14 @@
     "module": "nodenext",
     "target": "es2024",
     "noEmit": true,
+    "declaration": true,
     "allowImportingTsExtensions": true,
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "moduleResolution": "node16",
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "baseUrl": "./",
+    "types": ["vitest/globals"]
   }
 }
