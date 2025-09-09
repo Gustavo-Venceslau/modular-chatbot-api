@@ -4,6 +4,7 @@ import { randomUUID as uuid } from "node:crypto";
 import { User } from "src/domain/entities/User.ts";
 import { redisClient } from "src/adapters/client/RedisClient.ts";
 import { APIError } from "src/adapters/http/errors/APIError.ts";
+import { logger } from "src/utils/logger.ts";
 
 const agentService = new AgentService();
 
@@ -32,7 +33,7 @@ describe("Agent Service", () => {
 
     const awnser = await agentService.generateResponse(userPrompt);
 
-    console.log(awnser);
+    logger.info(awnser);
 
     expect(awnser.agent_workflow).not.toBeNull();
     expect(awnser.source_agent_response).not.toBeNull();

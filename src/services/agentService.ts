@@ -19,7 +19,7 @@ export class AgentService {
 
     const user = await redisClient.json.get(`user:data:${user_id}`);
 
-    if(!user) throw new APIError(404, "User not found by user_id");
+    // if(!user) throw new APIError(404, "User not found by user_id");
 
     if(!conversation_id) { conversation_id = uuid() }
 

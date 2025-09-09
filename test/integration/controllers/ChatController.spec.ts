@@ -2,6 +2,7 @@ import { app } from "src/index.ts";
 import { AgentRequest } from "src/types/Agent.ts";
 import { randomUUID as uuid } from "crypto";
 import request from "supertest";
+import { logger } from "src/utils/logger.ts";
 
 describe("Chat Controller", () => {
   test("SGiven a user prompt When agent receive Then must return a anwser", async () => {
@@ -14,7 +15,7 @@ describe("Chat Controller", () => {
     const response = await request(app).post("/chat/receive/")
       .send(userPrompt);
 
-    console.log(response.body);
+    logger.info(response.body);
 
     const { response: agentResponse, source_agent_response, agent_workflow} = response.body;
 
